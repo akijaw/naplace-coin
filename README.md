@@ -124,6 +124,9 @@ turso db shell naplace < db/schema.sql
 GitHub에 푸시 → Vercel import → 환경변수(`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`,
 `ADMIN_PASSWORD`) 설정 → 배포. 배포 후 `/admin` 에서 몬티홀 부스의 **운영용 키**를 발급하세요.
 
+현재 Vercel 프로젝트는 이 저장소의 `main` 브랜치와 연결되어 있습니다. 이후 `main`에 푸시하면
+프로덕션 사이트가 자동으로 다시 배포됩니다.
+
 ## 보안 참고 (의도적으로 최소화)
 
 학번만 알면 누구나 지급/결제가 가능하고, QR은 장식이며, 비밀번호는 평문이고 관리자 키는
