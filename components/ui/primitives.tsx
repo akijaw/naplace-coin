@@ -13,7 +13,7 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-2xl border border-border bg-card p-6 sm:p-7", className)}>
+    <div className={cn("rounded-card border border-border bg-card p-6 sm:p-8", className)}>
       {children}
     </div>
   );
@@ -26,7 +26,11 @@ export function CardTitle({
   children: ReactNode;
   className?: string;
 }) {
-  return <h2 className={cn("text-xl font-bold tracking-tight", className)}>{children}</h2>;
+  return (
+    <h2 className={cn("text-lg font-extrabold tracking-tight sm:text-xl", className)}>
+      {children}
+    </h2>
+  );
 }
 
 /* ---------- Button ---------- */
@@ -34,10 +38,10 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 
 export function buttonStyles(variant: Variant = "primary", className?: string): string {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 disabled:pointer-events-none";
+    "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-colors disabled:opacity-50 disabled:pointer-events-none";
   const variants: Record<Variant, string> = {
-    primary: "bg-fg text-bg hover:opacity-90",
-    secondary: "border border-border bg-subtle text-fg hover:bg-border/60",
+    primary: "bg-brand text-white hover:bg-brand-dark",
+    secondary: "border border-border bg-card text-fg hover:bg-subtle",
     ghost: "text-muted hover:text-fg hover:bg-subtle",
     danger: "border border-red-500/40 bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20",
   };
@@ -69,9 +73,9 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-sm font-semibold">{label}</span>
+      <span className="mb-2 block text-[13px] font-bold text-fg/80">{label}</span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-muted">{hint}</span> : null}
+      {hint ? <span className="mt-1.5 block text-xs text-muted">{hint}</span> : null}
     </label>
   );
 }
@@ -80,7 +84,7 @@ export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElem
   return (
     <input
       className={cn(
-        "w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-muted focus:border-fg/40",
+        "w-full rounded-2xl border border-border bg-subtle px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted focus:border-brand",
         className,
       )}
       {...props}
@@ -92,7 +96,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={cn(
-        "w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-muted focus:border-fg/40",
+        "w-full rounded-2xl border border-border bg-subtle px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted focus:border-brand",
         className,
       )}
       {...props}
@@ -162,9 +166,9 @@ export function IconCircle({
   tone?: "purple" | "green" | "blue";
 }) {
   const tones = {
-    purple: "bg-violet-500/15 text-violet-600 dark:text-violet-300",
-    green: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300",
-    blue: "bg-sky-500/15 text-sky-600 dark:text-sky-300",
+    purple: "bg-orange-tint text-brand",
+    green: "bg-blue-tint text-blue",
+    blue: "bg-blue-tint text-blue",
   };
   return (
     <div className={cn("flex h-14 w-14 items-center justify-center rounded-full", tones[tone])}>
@@ -183,10 +187,10 @@ export function StatCard({
   sub?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
-      <div className="text-sm text-muted">{label}</div>
-      <div className="mt-1 text-2xl font-bold tracking-tight">{value}</div>
-      {sub ? <div className="mt-0.5 text-xs text-muted">{sub}</div> : null}
+    <div className="rounded-3xl border border-border bg-card p-6">
+      <div className="text-[13px] font-semibold text-muted">{label}</div>
+      <div className="mt-1.5 text-2xl font-extrabold tracking-tight">{value}</div>
+      {sub ? <div className="mt-1 text-xs text-muted">{sub}</div> : null}
     </div>
   );
 }

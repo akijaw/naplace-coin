@@ -3,14 +3,18 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { adminLogin, type LoginState } from "@/app/actions";
 import { Container } from "@/components/ui/Container";
-import { Card, CardTitle, Field, Input, buttonStyles } from "@/components/ui/primitives";
+import { Card, CardTitle, Field, Input } from "@/components/ui/primitives";
 
 const initial: LoginState = {};
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className={buttonStyles("primary", "w-full")}>
+    <button
+      type="submit"
+      disabled={pending}
+      className="h-[52px] w-full rounded-2xl bg-ink text-base font-extrabold text-white transition-colors hover:bg-ink/90 disabled:opacity-50"
+    >
       {pending ? "확인 중…" : "관리자 로그인"}
     </button>
   );

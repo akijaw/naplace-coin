@@ -22,7 +22,7 @@ export default async function AdminClubsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">부스 · API 키</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight">부스 · API 키</h1>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <CreateClubForm />

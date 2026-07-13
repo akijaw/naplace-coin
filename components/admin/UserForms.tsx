@@ -47,7 +47,7 @@ export function CreateUserForm({ clubs }: { clubs: ClubRow[] }) {
           <Field label="소속 부스(선택)">
             <select
               name="clubId"
-              className="w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm outline-none focus:border-fg/40"
+              className="w-full rounded-2xl border border-border bg-subtle px-4 py-3 text-sm outline-none focus:border-brand"
             >
               <option value="">없음</option>
               {clubs.map((c) => (
@@ -81,7 +81,7 @@ export function AdjustBalanceForm() {
         <Field label="유형">
           <select
             name="direction"
-            className="w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm outline-none focus:border-fg/40"
+            className="w-full rounded-2xl border border-border bg-subtle px-4 py-3 text-sm outline-none focus:border-brand"
           >
             <option value="grant">지급 (+)</option>
             <option value="deduct">회수 (−)</option>

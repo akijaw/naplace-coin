@@ -31,7 +31,7 @@ export function PaymentRequestForm({ clubs }: { clubs: ClubRow[] }) {
         <Field label="청구 부스">
           <select
             name="clubId"
-            className="w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm outline-none focus:border-fg/40"
+            className="w-full rounded-2xl border border-border bg-subtle px-4 py-3 text-sm outline-none focus:border-brand"
           >
             {clubs.map((c) => (
               <option key={c.id} value={c.id}>

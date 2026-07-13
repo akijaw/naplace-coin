@@ -13,7 +13,7 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">사용자 관리</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight">사용자 관리</h1>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <CreateUserForm clubs={clubs} />

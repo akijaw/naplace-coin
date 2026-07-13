@@ -21,10 +21,10 @@ export function Tabs({ tabs }: { tabs: TabDef[] }) {
             type="button"
             onClick={() => setActive(t.key)}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-colors",
+              "flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm transition-colors",
               active === t.key
-                ? "bg-bg text-fg shadow-sm"
-                : "text-muted hover:text-fg",
+                ? "bg-card font-extrabold text-fg shadow-sm"
+                : "font-semibold text-muted hover:text-fg",
             )}
           >
             {t.label}

@@ -38,13 +38,15 @@ export function AdminSidebar() {
             key={l.href}
             href={l.href}
             className={cn(
-              "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
-              active ? "bg-fg text-bg" : "text-muted hover:bg-subtle hover:text-fg",
+              "flex items-center gap-2.5 rounded-xl px-3.5 py-3 text-sm transition-colors",
+              active
+                ? "bg-ink font-extrabold text-white"
+                : "font-semibold text-muted hover:bg-subtle hover:text-fg",
             )}
           >
             <Icon className="h-4 w-4" />
             {l.label}
-            {l.star ? <span className="ml-auto text-xs">★</span> : null}
+            {l.star ? <span className="ml-auto text-xs text-brand">★</span> : null}
           </Link>
         );
       })}

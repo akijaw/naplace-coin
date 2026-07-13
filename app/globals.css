@@ -3,28 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Apple SD Gothic Neo",
-    "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
   --font-serif: Georgia, "Times New Roman", "Nanum Myeongjo", "Apple SD Gothic Neo", serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
-  /* light theme */
-  --bg: 255 255 255;
-  --fg: 10 10 10;
-  --muted: 113 113 122;
-  --card: 250 250 250;
-  --border: 229 229 234;
-  --subtle: 244 244 245;
+  /* light theme — NA'PLACE 1a 리디자인 팔레트 */
+  --bg: 247 248 250;      /* #F7F8FA */
+  --fg: 20 38 60;         /* #14263C ink */
+  --muted: 123 135 148;   /* #7B8794 */
+  --card: 255 255 255;    /* #FFFFFF */
+  --border: 232 235 240;  /* #E8EBF0 */
+  --subtle: 242 244 247;  /* #F2F4F7 */
 }
 
 .dark {
-  /* dark theme */
-  --bg: 10 10 10;
-  --fg: 250 250 250;
-  --muted: 161 161 170;
-  --card: 24 24 27;
-  --border: 39 39 42;
-  --subtle: 39 39 42;
+  /* dark theme — 네이비 잉크 기반 다크 변형 */
+  --bg: 13 21 33;         /* deep navy */
+  --fg: 237 242 248;
+  --muted: 143 160 181;   /* #8FA0B5 */
+  --card: 20 32 49;
+  --border: 39 55 78;
+  --subtle: 27 42 63;
 }
 
 * {
@@ -41,6 +41,12 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, p, li, label {
+  text-wrap: pretty;
 }
 
 /* Prevent theme flash / transition smoothing */

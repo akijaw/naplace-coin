@@ -25,7 +25,7 @@ export default async function AdminTransactionsPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">전체 거래 내역</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight">전체 거래 내역</h1>
 
       <Card>
         <form className="flex flex-wrap items-end gap-3">
@@ -34,7 +34,7 @@ export default async function AdminTransactionsPage({
             <select
               name="type"
               defaultValue={type ?? ""}
-              className="rounded-xl border border-border bg-bg px-3 py-2.5 text-sm outline-none focus:border-fg/40"
+              className="rounded-2xl border border-border bg-subtle px-3.5 py-2.5 text-sm outline-none focus:border-brand"
             >
               {TYPES.map(([v, l]) => (
                 <option key={v} value={v}>
@@ -49,10 +49,10 @@ export default async function AdminTransactionsPage({
               name="account"
               defaultValue={account ?? ""}
               placeholder="예: 2601 또는 montyhall"
-              className="rounded-xl border border-border bg-bg px-3 py-2.5 text-sm outline-none focus:border-fg/40"
+              className="rounded-2xl border border-border bg-subtle px-3.5 py-2.5 text-sm outline-none focus:border-brand"
             />
           </label>
-          <button className="rounded-xl bg-fg px-4 py-2.5 text-sm font-semibold text-bg">필터</button>
+          <button className="rounded-xl bg-ink px-4 py-2.5 text-sm font-bold text-white">필터</button>
           <Link href="/admin/transactions" className="px-2 py-2.5 text-sm text-muted hover:text-fg">
             초기화
           </Link>
@@ -83,8 +83,8 @@ export default async function AdminTransactionsPage({
                       className={cn(
                         "text-xs font-semibold",
                         t.transaction_type === "admin_grant" || t.transaction_type === "club_to_student"
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-rose-600 dark:text-rose-400",
+                          ? "text-blue"
+                          : "text-brand",
                       )}
                     >
                       {txLabel(t.transaction_type)}

@@ -71,10 +71,10 @@ export function QrScanner({ onScan }: { onScan: (id: string) => void }) {
         </button>
       </div>
 
-      <div className="mt-4 overflow-hidden rounded-xl bg-black">
+      <div className="mt-4 overflow-hidden rounded-2xl bg-ink">
         <div id={ELEMENT_ID} className="mx-auto w-full" />
         {!active ? (
-          <div className="flex h-56 items-center justify-center text-sm text-zinc-400">
+          <div className="flex h-[300px] items-center justify-center text-sm font-semibold text-ink-soft">
             카메라가 꺼져 있습니다
           </div>
         ) : null}

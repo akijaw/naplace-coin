@@ -48,19 +48,20 @@ export function PendingRequestCard({
   const error = approveState.error || rejectState.error;
 
   return (
-    <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5">
+    <div className="rounded-card border-[1.5px] border-brand bg-card p-6 shadow-glow">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
-          결제 요청 대기중
+        <span className="flex items-center gap-2 text-sm font-extrabold">
+          <span className="h-2 w-2 rounded-full bg-brand" />
+          결제 요청 도착
         </span>
-        <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+        <span className="rounded-full bg-orange-tint px-3 py-1 text-xs font-extrabold text-brand">
           {remaining}초 남음
         </span>
       </div>
 
-      <div className="mt-3 flex items-baseline gap-2">
-        <span className="text-2xl font-bold">{formatCoin(amount)}</span>
-        <span className="text-sm text-muted">코인 결제</span>
+      <div className="mt-3.5 flex items-baseline gap-2">
+        <span className="text-[28px] font-extrabold tracking-tight">{formatCoin(amount)}</span>
+        <span className="text-sm font-semibold text-muted">코인 결제</span>
       </div>
       <p className="mt-1 text-sm text-muted">
         {clubName ? `${clubName} · ` : ""}

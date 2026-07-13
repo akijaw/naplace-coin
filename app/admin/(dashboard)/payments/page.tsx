@@ -14,7 +14,7 @@ export default async function AdminPaymentsPage() {
   return (
     <div className="space-y-6">
       <AutoRefresh intervalMs={3000} />
-      <h1 className="text-2xl font-bold tracking-tight">결제 요청</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight">결제 요청</h1>
 
       <div className="grid gap-6 lg:grid-cols-[24rem_1fr]">
         <PaymentRequestForm clubs={clubs} />

@@ -15,6 +15,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const user = await getSessionUser();
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body>
         <ThemeProvider>
           <Header user={user} />

@@ -109,7 +109,7 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
           <select
             value={clubId}
             onChange={(e) => setClubId(e.target.value)}
-            className="w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm outline-none focus:border-fg/40"
+            className="w-full rounded-2xl border border-border bg-subtle px-4 py-3 text-sm font-semibold outline-none focus:border-brand"
           >
             {clubs.length === 0 ? <option value="">부스 없음</option> : null}
             {clubs.map((c) => (
@@ -145,8 +145,8 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
           type="button"
           onClick={() => setTab("qr")}
           className={cn(
-            "flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-colors",
-            tab === "qr" ? "bg-bg text-fg shadow-sm" : "text-muted hover:text-fg",
+            "flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm transition-colors",
+            tab === "qr" ? "bg-card font-extrabold text-fg shadow-sm" : "font-semibold text-muted hover:text-fg",
           )}
         >
           <ScanLine className="h-4 w-4" /> QR 스캔
@@ -155,8 +155,8 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
           type="button"
           onClick={() => setTab("id")}
           className={cn(
-            "flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-colors",
-            tab === "id" ? "bg-bg text-fg shadow-sm" : "text-muted hover:text-fg",
+            "flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm transition-colors",
+            tab === "id" ? "bg-card font-extrabold text-fg shadow-sm" : "font-semibold text-muted hover:text-fg",
           )}
         >
           <Hash className="h-4 w-4" /> 학번 입력
@@ -337,7 +337,7 @@ function ActivityManager({
         <select
           value={direction}
           onChange={(e) => setDirection(e.target.value as Direction)}
-          className="rounded-xl border border-border bg-bg px-3 py-2.5 text-sm outline-none focus:border-fg/40"
+          className="rounded-2xl border border-border bg-subtle px-3 py-3 text-sm outline-none focus:border-brand"
         >
           <option value="student_to_club">결제(학생→부스)</option>
           <option value="club_to_student">지급(부스→학생)</option>
