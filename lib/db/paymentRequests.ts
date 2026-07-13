@@ -2,7 +2,6 @@ import { nanoid } from "nanoid";
 import { db, firstAs, rowsAs } from "./client";
 import { applyTransfer } from "./transactions";
 import { withWriteRetry } from "./retry";
-import { getUserById } from "./users";
 import { AppError, NotFoundError, ValidationError } from "../errors";
 import type { PaymentRequestRow } from "./types";
 
@@ -39,17 +38,46 @@ export interface CreatedPaymentRequest {
 export async function createPaymentRequest(
   input: CreatePaymentRequestInput,
 ): Promise<CreatedPaymentRequest> {
-  const student = await getUserById(input.studentId);
-  if (!student) throw new NotFoundError("학생을 찾을 수 없습니다.");
+  return withWriteRetry(async () => {
+    const tx = await db.transaction("write");
+    try {
+      const studentResult = await tx.execute({
+        sql: "SELECT id, name FROM users WHERE id = ? AND active = 1",
+        args: [input.studentId],
+      });
+      const student = firstAs<{ id: string; name: string }>(studentResult.rows);
+      if (!student) throw new NotFoundError("학생을 찾을 수 없습니다.");
 
-  const id = "pr_" + nanoid();
-  await db.execute({
-    sql: `INSERT INTO payment_requests (id, student_id, club_id, amount, title, status, expires_at)
-          VALUES (?, ?, ?, ?, ?, 'pending', strftime('%Y-%m-%dT%H:%M:%fZ','now','+120 seconds'))`,
-    args: [id, input.studentId, input.clubId, input.amount, input.title ?? null],
+      const id = "pr_" + nanoid();
+      await applyTransfer(tx, {
+        studentId: input.studentId,
+        clubId: input.clubId,
+        amount: input.amount,
+        type: "student_to_club",
+        title: input.title ?? "자동 결제",
+      });
+      await tx.execute({
+        sql: `INSERT INTO payment_requests
+              (id, student_id, club_id, amount, title, status, expires_at, resolved_at)
+              VALUES (?, ?, ?, ?, ?, 'approved', ${NOW}, ${NOW})`,
+        args: [id, input.studentId, input.clubId, input.amount, input.title ?? null],
+      });
+      const requestResult = await tx.execute({
+        sql: "SELECT * FROM payment_requests WHERE id = ?",
+        args: [id],
+      });
+      const request = firstAs<PaymentRequestRow>(requestResult.rows);
+      await tx.commit();
+      return { request: request!, student };
+    } catch (e) {
+      try {
+        await tx.rollback();
+      } catch {
+        /* noop */
+      }
+      throw e;
+    }
   });
-  const request = await getRaw(id);
-  return { request: request!, student: { id: student.id, name: student.name } };
 }
 
 /** 상태 조회 (지연 만료 반영). */
@@ -58,7 +86,7 @@ export async function getPaymentRequest(id: string): Promise<PaymentRequestRow |
   return getRaw(id);
 }
 
-/** 학생 지갑용: 아직 유효한 pending 요청 목록. */
+/** 이전 승인 방식 호환용: 학생의 아직 유효한 pending 요청 목록. */
 export async function listPendingForStudent(
   studentId: string,
 ): Promise<PaymentRequestRow[]> {
@@ -100,7 +128,7 @@ export async function listAll(limit = 200): Promise<PaymentRequestWithNames[]> {
   return rowsAs<PaymentRequestWithNames>(res.rows);
 }
 
-/** 요청 취소 (요청한 부스 또는 관리자). pending 일 때만. */
+/** 이전 승인 방식 호환용: pending 요청 취소. */
 export async function cancelPaymentRequest(
   id: string,
   clubId?: string,
@@ -120,7 +148,7 @@ export async function cancelPaymentRequest(
   return (await getRaw(id))!;
 }
 
-/** 학생 승인 — 상태 전이와 코인 이동을 같은 트랜잭션에서 원자적으로. */
+/** 이전 승인 방식 호환용: 상태 전이와 코인 이동을 같은 트랜잭션에서 처리. */
 export async function approvePaymentRequest(
   id: string,
   studentId: string,
@@ -172,7 +200,7 @@ export async function approvePaymentRequest(
   });
 }
 
-/** 학생 거절 — pending 일 때만. */
+/** 이전 승인 방식 호환용: pending 요청 거절. */
 export async function rejectPaymentRequest(
   id: string,
   studentId: string,

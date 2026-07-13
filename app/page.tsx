@@ -118,7 +118,7 @@ export default async function HomePage() {
             <Bullet tone="brand" title="내 계좌" desc="잔액 조회 및 QR 코드 생성" />
             <Bullet tone="brand" title="활동 내역" desc="거래 히스토리 확인" />
             <Bullet tone="brand" title="랭킹" desc="개인 및 부스 순위 확인" />
-            <Bullet tone="brand" title="결제 승인" desc="부스의 결제 요청을 확인하고 승인" />
+            <Bullet tone="brand" title="자동 결제" desc="부스에서 결제하면 승인 없이 즉시 처리" />
           </ul>
         </div>
         <div className={cardCls}>
@@ -130,7 +130,7 @@ export default async function HomePage() {
           </div>
           <ul className="mt-5 space-y-3">
             <Bullet tone="blue" title="결제 처리" desc="코인 지급/차감 처리" />
-            <Bullet tone="blue" title="학번 결제 요청" desc="학번 입력으로 결제 요청 전송" />
+            <Bullet tone="blue" title="학번 자동 결제" desc="학번 입력으로 승인 없이 즉시 결제" />
             <Bullet tone="blue" title="활동 관리" desc="다양한 활동 유형 관리" />
             <Bullet tone="blue" title="API 연동" desc="부스 자체 프로그램에서 API 호출" />
           </ul>
@@ -172,7 +172,7 @@ export default async function HomePage() {
               <Step n={1} tone="blue">학번과 비밀번호로 로그인</Step>
               <Step n={2} tone="blue">내 계좌에서 QR 코드 확인</Step>
               <Step n={3} tone="blue">부스에서 QR 코드 제시 또는 학번 전달</Step>
-              <Step n={4} tone="blue">결제 요청이 오면 지갑에서 승인</Step>
+              <Step n={4} tone="blue">결제 결과와 잔액을 지갑에서 확인</Step>
               <Step n={5} tone="blue">활동 내역에서 거래 기록 확인</Step>
             </ol>
           </div>
@@ -181,8 +181,8 @@ export default async function HomePage() {
             <ol className="mt-2.5 space-y-2.5">
               <Step n={1} tone="brand">학생의 학번(또는 QR) 확인</Step>
               <Step n={2} tone="brand">지급/결제 금액과 활동 선택</Step>
-              <Step n={3} tone="brand">결제 요청 전송 또는 API 호출</Step>
-              <Step n={4} tone="brand">학생 승인 후 거래 완료</Step>
+              <Step n={3} tone="brand">자동 결제 실행 또는 API 호출</Step>
+              <Step n={4} tone="brand">승인 없이 즉시 거래 완료</Step>
               <Step n={5} tone="brand">성공/실패 메시지 확인</Step>
             </ol>
           </div>
@@ -194,7 +194,7 @@ export default async function HomePage() {
         <h2 className="text-lg font-extrabold tracking-tight">문제 해결</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-3">
           {[
-            ["결제 요청이 안 보여요", "지갑 페이지를 새로고침하고, 요청이 만료(120초)되지 않았는지 확인하세요."],
+            ["결제 결과가 안 보여요", "지갑 페이지를 새로고침하고 거래 내역과 현재 잔액을 확인하세요."],
             ["거래가 처리되지 않아요", "네트워크 연결을 확인하고 잔액이 충분한지 확인하세요."],
             ["잔액이 업데이트되지 않아요", "페이지를 새로고침해 주세요."],
           ].map(([t, d]) => (

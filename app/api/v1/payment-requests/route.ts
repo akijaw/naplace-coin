@@ -9,7 +9,7 @@ import { rateLimit } from "@/lib/rateLimit";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// 학번으로 결제 요청 → 학생 승인 시 결제. 120초 후 자동 만료.
+// 학번으로 자동 결제. 학생 승인 없이 즉시 학생 → 부스로 코인을 이동한다.
 export async function POST(req: NextRequest) {
   try {
     const club = await getClubFromApiKey(req);
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         status: request.status,
         student,
         amount: request.amount,
-        expires_at: request.expires_at,
+        completed_at: request.resolved_at,
       },
       201,
     );

@@ -6,7 +6,7 @@ import { json, handleError } from "@/lib/http";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// 요청한 부스만 자신의 pending 요청을 취소할 수 있습니다.
+// 이전 방식으로 생성된 pending 요청만 요청한 부스가 취소할 수 있습니다.
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },

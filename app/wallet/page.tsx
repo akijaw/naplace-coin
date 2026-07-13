@@ -1,14 +1,11 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { getStudentTransactions } from "@/lib/db/transactions";
-import { listPendingForStudent } from "@/lib/db/paymentRequests";
-import { listClubs } from "@/lib/db/clubs";
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { AutoRefresh } from "@/components/ui/AutoRefresh";
 import { QrCard } from "@/components/wallet/QrCard";
-import { PendingRequestCard } from "@/components/wallet/PendingRequestCard";
 import { formatCoin, formatDateTime, isCreditForStudent, txLabel } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -17,12 +14,7 @@ export default async function WalletPage() {
   const user = await getSessionUser();
   if (!user) redirect("/login");
 
-  const [txs, pending, clubs] = await Promise.all([
-    getStudentTransactions(user.id, 100),
-    listPendingForStudent(user.id),
-    listClubs(),
-  ]);
-  const clubName = new Map(clubs.map((c) => [c.id, c.name]));
+  const txs = await getStudentTransactions(user.id, 100);
 
   return (
     <Container className="space-y-6">
@@ -68,25 +60,6 @@ export default async function WalletPage() {
         {/* QR */}
         <QrCard userId={user.id} />
       </div>
-
-      {/* 대기중 결제 요청 */}
-      {pending.length > 0 ? (
-        <section className="space-y-3">
-          <h2 className="text-lg font-extrabold tracking-tight">대기중인 결제 요청</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {pending.map((p) => (
-              <PendingRequestCard
-                key={p.id}
-                id={p.id}
-                amount={p.amount}
-                title={p.title}
-                clubName={clubName.get(p.club_id) ?? null}
-                expiresAt={p.expires_at}
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
 
       {/* 거래 내역 */}
       <div id="history" className="rounded-card border border-border bg-card p-7 sm:p-8">

@@ -17,7 +17,7 @@ import {
 const LINKS = [
   { href: "/admin", label: "대시보드", icon: LayoutDashboard },
   { href: "/admin/grant", label: "코인 지급", icon: HandCoins, star: true },
-  { href: "/admin/payments", label: "결제 요청", icon: ReceiptText, star: true },
+  { href: "/admin/payments", label: "자동 결제", icon: ReceiptText, star: true },
   { href: "/admin/users", label: "사용자 관리", icon: Users },
   { href: "/admin/clubs", label: "부스 · API 키", icon: Store },
   { href: "/admin/transactions", label: "전체 거래 내역", icon: ScrollText },

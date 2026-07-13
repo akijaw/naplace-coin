@@ -83,7 +83,7 @@ export async function adminLookupUser(
   return u ? { name: u.name, balance: u.balance } : null;
 }
 
-/* ---------- 결제 요청 (must-have) ---------- */
+/* ---------- 자동 결제 ---------- */
 export async function createAdminPaymentRequest(
   _prev: AdminState,
   formData: FormData,
@@ -97,7 +97,7 @@ export async function createAdminPaymentRequest(
     const title = s(formData, "title") || null;
     await createPaymentRequest({ studentId, clubId, amount, title });
     revalidateAdmin();
-    return { ok: true, message: "결제 요청을 생성했습니다. 학생 승인 대기중." };
+    return { ok: true, message: "자동 결제가 완료되었습니다." };
   } catch (e) {
     return fail(e);
   }

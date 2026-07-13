@@ -225,8 +225,7 @@ export default function DocsPage() {
         <DocSection id="payment-requests">
           <DocH2 id="pr-h">POST /payment-requests</DocH2>
           <p className="mt-3 leading-relaxed text-stone-600 dark:text-stone-300">
-            학번으로 결제 요청을 생성합니다. 학생 지갑 화면에 요청이 표시되고, 학생이 승인하면 결제됩니다.
-            120초 후 자동 만료됩니다. (즉시 결제가 필요하면 <code className="font-mono">/transfer</code> 를 사용하세요.)
+            학번으로 자동 결제를 실행합니다. 학생의 별도 승인 없이 학생 잔액에서 부스 잔액으로 즉시 이동합니다.
           </p>
           <div className="mt-4">
             <FieldTable
@@ -244,7 +243,7 @@ export default function DocsPage() {
             />
             <CodeBlock
               label="201 응답"
-              code={`{\n  "request_id": "pr_abc123",\n  "status": "pending",\n  "student": { "id": "2601", "name": "나플 데모 학생" },\n  "amount": 500,\n  "expires_at": "2026-07-13T..."\n}`}
+              code={`{\n  "request_id": "pr_abc123",\n  "status": "approved",\n  "student": { "id": "2601", "name": "나플 데모 학생" },\n  "amount": 500,\n  "completed_at": "2026-07-13T..."\n}`}
             />
           </div>
         </DocSection>
@@ -252,13 +251,13 @@ export default function DocsPage() {
         <DocSection id="pr-get">
           <EndpointHeading method="GET" path="/payment-requests/{id}" />
           <p className="mt-3 text-stone-600 dark:text-stone-300">
-            결제 요청 상태를 폴링합니다. status: pending, approved, rejected, expired, canceled.
+            결제 기록의 상태를 조회합니다. 자동 결제가 성공하면 status는 즉시 approved입니다.
           </p>
         </DocSection>
 
         <DocSection id="pr-cancel">
           <EndpointHeading method="POST" path="/payment-requests/{id}/cancel" />
-          <p className="mt-3 text-stone-600 dark:text-stone-300">대기중(pending)인 결제 요청을 취소합니다.</p>
+          <p className="mt-3 text-stone-600 dark:text-stone-300">이전 방식으로 생성된 대기중(pending) 요청만 취소할 수 있습니다.</p>
         </DocSection>
       </article>
     </div>

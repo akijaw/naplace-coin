@@ -7,7 +7,7 @@ import { NotFoundError } from "@/lib/errors";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// 상태 폴링. pending|approved|rejected|expired|canceled
+// 결제 기록 상태 확인. 자동 결제 성공 시 즉시 approved.
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },

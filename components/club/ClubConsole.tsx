@@ -8,15 +8,12 @@ import {
   Field,
   Input,
   IconCircle,
-  StatusPill,
   buttonStyles,
   cn,
 } from "@/components/ui/primitives";
 import { QrScanner } from "./QrScanner";
 import {
   clubCreatePaymentRequest,
-  getRequestStatus,
-  cancelClubRequest,
   clubTransfer,
   listActivities,
   addActivity,
@@ -35,7 +32,6 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
   const [title, setTitle] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<Msg>(null);
-  const [req, setReq] = useState<{ id: string; status: string } | null>(null);
   const [activities, setActivities] = useState<ActivityRow[]>([]);
 
   const refreshActivities = useCallback(async (cid: string) => {
@@ -46,16 +42,6 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
   useEffect(() => {
     void refreshActivities(clubId);
   }, [clubId, refreshActivities]);
-
-  // 결제 요청 상태 폴링
-  useEffect(() => {
-    if (!req || req.status !== "pending") return;
-    const t = setInterval(async () => {
-      const s = await getRequestStatus(req.id);
-      if (s && s.status !== req.status) setReq({ id: req.id, status: s.status });
-    }, 2000);
-    return () => clearInterval(t);
-  }, [req]);
 
   function onScan(id: string) {
     setStudentId(id);
@@ -71,8 +57,7 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
     const res = await clubCreatePaymentRequest(clubId, studentId, amount, title);
     setBusy(false);
     if (res.ok) {
-      setReq({ id: res.requestId, status: "pending" });
-      setMsg({ type: "ok", text: "결제 요청을 보냈습니다. 학생 승인을 기다립니다." });
+      setMsg({ type: "ok", text: "결제가 완료되었습니다." });
     } else {
       setMsg({ type: "err", text: res.error });
     }
@@ -93,12 +78,6 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
           }
         : { type: "err", text: res.error },
     );
-  }
-
-  async function cancelReq() {
-    if (!req) return;
-    await cancelClubRequest(req.id, clubId);
-    setReq({ id: req.id, status: "canceled" });
   }
 
   return (
@@ -128,7 +107,7 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
           {[
             { icon: <Camera className="h-6 w-6" />, tone: "purple" as const, t: "1. 학번 확인", d: "QR 스캔 또는 학번 입력" },
             { icon: <ScanLine className="h-6 w-6" />, tone: "purple" as const, t: "2. 금액 입력", d: "지급/결제 금액과 사유" },
-            { icon: <Send className="h-6 w-6" />, tone: "green" as const, t: "3. 결제 진행", d: "요청 전송 또는 즉시 처리" },
+            { icon: <Send className="h-6 w-6" />, tone: "green" as const, t: "3. 결제 진행", d: "승인 없이 즉시 처리" },
           ].map((s) => (
             <div key={s.t} className="flex flex-col items-center text-center">
               <IconCircle tone={s.tone}>{s.icon}</IconCircle>
@@ -173,9 +152,9 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
         </Card>
       ) : (
         <Card>
-          <CardTitle>학번으로 결제 요청</CardTitle>
+          <CardTitle>학번으로 자동 결제</CardTitle>
           <p className="mt-1 text-sm text-muted">
-            학번을 입력하면 학생 화면으로 결제 요청이 전달되고, 학생이 승인하면 결제됩니다.
+            학번과 금액을 입력하면 학생 승인 없이 즉시 결제됩니다.
           </p>
           <div className="mt-5 space-y-4">
             <Field label="학번">
@@ -208,7 +187,7 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
               disabled={busy}
               className={buttonStyles("primary", "w-full")}
             >
-              {busy ? "처리 중…" : "요청 보내기 (학생 승인)"}
+              {busy ? "처리 중…" : "즉시 결제하기"}
             </button>
 
             <div className="flex gap-2">
@@ -220,17 +199,9 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
               >
                 즉시 지급 →
               </button>
-              <button
-                type="button"
-                onClick={() => doTransfer("student_to_club")}
-                disabled={busy}
-                className={buttonStyles("secondary", "flex-1")}
-              >
-                ← 즉시 결제
-              </button>
             </div>
             <p className="text-center text-xs text-muted">
-              즉시 지급/결제는 승인 없이 학번만으로 처리됩니다 (보안 최소화 정책).
+              결제와 지급은 승인 없이 학번만으로 처리됩니다 (보안 최소화 정책).
             </p>
 
             {msg ? (
@@ -239,18 +210,6 @@ export function ClubConsole({ clubs }: { clubs: ClubRow[] }) {
               </p>
             ) : null}
 
-            {req ? (
-              <div className="flex items-center justify-between rounded-xl border border-border bg-subtle p-3 text-sm">
-                <span className="flex items-center gap-2">
-                  결제 요청 상태 <StatusPill status={req.status} />
-                </span>
-                {req.status === "pending" ? (
-                  <button type="button" onClick={cancelReq} className="text-xs font-semibold text-red-500 hover:underline">
-                    취소
-                  </button>
-                ) : null}
-              </div>
-            ) : null}
           </div>
         </Card>
       )}

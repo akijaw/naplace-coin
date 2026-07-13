@@ -11,7 +11,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <button type="submit" disabled={pending} className={buttonStyles("primary", "w-full")}>
-      {pending ? "요청 생성 중…" : "결제 요청 생성"}
+      {pending ? "결제 중…" : "즉시 결제"}
     </button>
   );
 }
@@ -20,9 +20,9 @@ export function PaymentRequestForm({ clubs }: { clubs: ClubRow[] }) {
   const [state, action] = useFormState(createAdminPaymentRequest, initial);
   return (
     <Card>
-      <CardTitle>결제 요청 생성</CardTitle>
+      <CardTitle>자동 결제</CardTitle>
       <p className="mt-1 text-sm text-muted">
-        학생에게 결제 요청을 보냅니다. 학생이 지갑에서 승인하면 코인이 이동합니다 (120초 후 만료).
+        학번과 금액을 입력하면 학생 승인 없이 즉시 코인이 이동합니다.
       </p>
       <form action={action} className="mt-5 space-y-4">
         <Field label="사용자 ID(학번)">

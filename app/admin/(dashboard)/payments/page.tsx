@@ -14,15 +14,15 @@ export default async function AdminPaymentsPage() {
   return (
     <div className="space-y-6">
       <AutoRefresh intervalMs={3000} />
-      <h1 className="text-2xl font-extrabold tracking-tight">결제 요청</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight">자동 결제</h1>
 
       <div className="grid gap-6 lg:grid-cols-[24rem_1fr]">
         <PaymentRequestForm clubs={clubs} />
 
         <Card>
-          <CardTitle>요청 목록</CardTitle>
+          <CardTitle>결제 기록</CardTitle>
           {requests.length === 0 ? (
-            <p className="mt-4 text-sm text-muted">결제 요청이 없습니다.</p>
+            <p className="mt-4 text-sm text-muted">결제 기록이 없습니다.</p>
           ) : (
             <div className="mt-4 overflow-x-auto">
               <table className="w-full text-sm">

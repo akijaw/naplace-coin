@@ -1,6 +1,6 @@
 "use server";
 
-import { createPaymentRequest, getPaymentRequest, cancelPaymentRequest } from "@/lib/db/paymentRequests";
+import { createPaymentRequest } from "@/lib/db/paymentRequests";
 import { createTransfer } from "@/lib/db/transactions";
 import {
   listActivitiesByClub,
@@ -16,7 +16,7 @@ function errMsg(e: unknown): string {
 }
 
 export type ReqResult =
-  | { ok: true; requestId: string; expiresAt: string }
+  | { ok: true; requestId: string; status: "approved" }
   | { ok: false; error: string };
 
 export async function clubCreatePaymentRequest(
@@ -33,26 +33,7 @@ export async function clubCreatePaymentRequest(
       amount,
       title: title.trim() || null,
     });
-    return { ok: true, requestId: request.id, expiresAt: request.expires_at };
-  } catch (e) {
-    return { ok: false, error: errMsg(e) };
-  }
-}
-
-export async function getRequestStatus(
-  id: string,
-): Promise<{ status: string } | null> {
-  const pr = await getPaymentRequest(id);
-  return pr ? { status: pr.status } : null;
-}
-
-export async function cancelClubRequest(
-  id: string,
-  clubId: string,
-): Promise<{ ok: boolean; error?: string }> {
-  try {
-    await cancelPaymentRequest(id, clubId);
-    return { ok: true };
+    return { ok: true, requestId: request.id, status: "approved" };
   } catch (e) {
     return { ok: false, error: errMsg(e) };
   }

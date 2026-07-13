@@ -14,7 +14,7 @@ export interface TransferInput {
 
 /**
  * 열린 트랜잭션 안에서 차감·적립·원장기록을 수행 (commit/rollback 하지 않음).
- * createTransfer 와 결제요청 승인(approvePaymentRequest)이 공유합니다.
+ * createTransfer, 자동 결제, 이전 결제요청 승인이 공유합니다.
  */
 export async function applyTransfer(
   tx: Transaction,

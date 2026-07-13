@@ -53,13 +53,13 @@
       payout: function (studentId, amount, title) {
         return call("/transfer", { method: "POST", body: { student_id: String(studentId), amount: amount, type: "club_to_student", title: title || "몬티홀 당첨" } });
       },
-      // 승인 기반 결제 요청 (학생이 지갑에서 승인)
+      // 자동 결제 (학생 승인 없이 즉시 완료)
       createPaymentRequest: function (studentId, amount, title) {
         return call("/payment-requests", { method: "POST", body: { student_id: String(studentId), amount: amount, title: title || "몬티홀 칩 구매" } });
       },
       getPaymentRequest: function (id) { return call("/payment-requests/" + encodeURIComponent(id)); },
       cancelPaymentRequest: function (id) { return call("/payment-requests/" + encodeURIComponent(id) + "/cancel", { method: "POST" }); },
-      // 결제 요청 상태를 승인/거절/만료까지 폴링
+      // 호환용 상태 확인 (자동 결제 성공 시 즉시 approved)
       pollPaymentRequest: async function (id, timeoutMs, everyMs) {
         timeoutMs = timeoutMs || 125000; everyMs = everyMs || 2000;
         var start = Date.now();
