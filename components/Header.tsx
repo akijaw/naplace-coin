@@ -46,9 +46,17 @@ export function Header({ user }: { user: UserRow | null }) {
               </form>
             </>
           ) : (
-            <Link href="/login" className={buttonStyles("primary", "!px-4")}>
-              로그인
-            </Link>
+            <>
+              <Link
+                href="/signup"
+                className="hidden text-sm font-semibold text-muted transition-colors hover:text-fg sm:inline"
+              >
+                회원가입
+              </Link>
+              <Link href="/login" className={buttonStyles("primary", "!px-4")}>
+                로그인
+              </Link>
+            </>
           )}
           <ThemeToggle />
         </div>

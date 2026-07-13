@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { useFormState, useFormStatus } from "react-dom";
 import { studentLogin, adminLogin, type LoginState } from "@/app/actions";
@@ -37,6 +38,12 @@ function StudentForm() {
       {state.error ? <p className="text-sm text-red-500">{state.error}</p> : null}
       <SubmitButton tone="brand">학생 로그인</SubmitButton>
       <p className="text-center text-xs text-muted">데모 계정 — naplace / 1234</p>
+      <p className="text-center text-sm text-muted">
+        계정이 없으신가요?{" "}
+        <Link href="/signup" className="font-bold text-brand hover:text-brand-dark">
+          회원가입
+        </Link>
+      </p>
     </form>
   );
 }
