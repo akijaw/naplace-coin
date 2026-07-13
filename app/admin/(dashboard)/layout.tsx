@@ -9,8 +9,8 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {
   if (!(await isAdmin())) redirect("/admin/login");
   return (
-    <Container className="max-w-6xl">
-      <div className="grid gap-8 md:grid-cols-[200px_1fr]">
+    <Container className="max-w-[1800px]">
+      <div className="grid gap-10 md:grid-cols-[240px_minmax(0,1fr)]">
         <aside className="md:sticky md:top-24 md:self-start">
           <AdminSidebar />
         </aside>
