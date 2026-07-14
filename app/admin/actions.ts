@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { assertAdmin } from "@/lib/admin";
-import { adminGrant, adminDeduct } from "@/lib/db/transactions";
+import { adminGrant, adminDeduct, adminFundClub } from "@/lib/db/transactions";
 import { getUserById, createUser, setUserActive } from "@/lib/db/users";
-import { createClub } from "@/lib/db/clubs";
+import { createClub, getClubById } from "@/lib/db/clubs";
 import { issueApiKey, rotateApiKey, setApiKeyActive } from "@/lib/db/apiKeys";
 import { createPaymentRequest, cancelPaymentRequest } from "@/lib/db/paymentRequests";
 import { parseAmount } from "@/lib/validate";
@@ -156,6 +156,22 @@ export async function createClubAction(_prev: AdminState, formData: FormData): P
     await createClub({ id, name, balance });
     revalidateAdmin();
     return { ok: true, message: `부스 생성: ${name} (${id})` };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function depositClubAction(_prev: AdminState, formData: FormData): Promise<AdminState> {
+  try {
+    await assertAdmin();
+    const clubId = s(formData, "clubId");
+    if (!clubId) return { error: "부스를 선택하세요." };
+    const amount = parseAmount(formData.get("amount"));
+    const reason = s(formData, "reason") || "관리자 금고 입금";
+    await adminFundClub(clubId, amount, reason);
+    const club = await getClubById(clubId);
+    revalidateAdmin();
+    return { ok: true, message: `금고 입금 완료: ${club?.name ?? clubId} +${amount}코인 (잔액 ${club?.balance ?? "?"})` };
   } catch (e) {
     return fail(e);
   }

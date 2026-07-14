@@ -122,6 +122,31 @@ export async function adminGrant(
 }
 
 /** 관리자 코인 회수 (차감/burn). 잔액 부족 시 실패. */
+export async function adminFundClub(
+  clubId: string,
+  amount: number,
+  title?: string | null,
+): Promise<void> {
+  return withWriteRetry(async () => {
+    const tx = await db.transaction("write");
+    try {
+      const credit = await tx.execute({
+        sql: "UPDATE clubs SET balance = balance + ? WHERE id = ?",
+        args: [amount, clubId],
+      });
+      if (credit.rowsAffected !== 1) throw new NotFoundError("부스를 찾을 수 없습니다.");
+      await tx.execute({
+        sql: "INSERT INTO transactions (student_id, club_id, amount, transaction_type, title) VALUES (NULL, ?, ?, 'admin_grant', ?)",
+        args: [clubId, amount, title ?? "관리자 금고 입금"],
+      });
+      await tx.commit();
+    } catch (e) {
+      try { await tx.rollback(); } catch { /* noop */ }
+      throw e;
+    }
+  });
+}
+
 export async function adminDeduct(
   studentId: string,
   amount: number,

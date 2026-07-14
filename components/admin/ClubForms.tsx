@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import {
   createClubAction,
+  depositClubAction,
   issueKeyAction,
   rotateKeyAction,
   type AdminState,
@@ -14,12 +15,30 @@ import type { ClubRow } from "@/lib/db/types";
 
 const initial: AdminState = {};
 
-function Submit({ label, busy, variant = "primary" }: { label: string; busy: string; variant?: "primary" | "secondary" }) {
+function Submit({ label, busy, variant = "primary", className = "w-full" }: { label: string; busy: string; variant?: "primary" | "secondary"; className?: string }) {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className={buttonStyles(variant, "w-full")}>
+    <button type="submit" disabled={pending} className={buttonStyles(variant, className)}>
       {pending ? busy : label}
     </button>
+  );
+}
+
+export function VaultDepositForm({ club }: { club: ClubRow }) {
+  const [state, action] = useFormState(depositClubAction, initial);
+  return (
+    <form action={action} className="mt-4 grid gap-2 sm:grid-cols-[1fr_1.4fr_auto] sm:items-end">
+      <input type="hidden" name="clubId" value={club.id} />
+      <Field label="입금할 코인">
+        <Input name="amount" placeholder="예: 100000" inputMode="numeric" />
+      </Field>
+      <Field label="입금 사유(선택)">
+        <Input name="reason" placeholder="예: 행사 운영비" />
+      </Field>
+      <Submit label="금고에 입금" busy="입금 중…" className="h-11" />
+      {state.error ? <p className="text-sm text-red-500 sm:col-span-3">{state.error}</p> : null}
+      {state.ok ? <p className="text-sm text-emerald-600 dark:text-emerald-400 sm:col-span-3">{state.message}</p> : null}
+    </form>
   );
 }
 

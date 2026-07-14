@@ -2,7 +2,7 @@ import { listClubs } from "@/lib/db/clubs";
 import { listAllApiKeys } from "@/lib/db/apiKeys";
 import { deactivateKeyAction } from "@/app/admin/actions";
 import { Card, CardTitle } from "@/components/ui/primitives";
-import { CreateClubForm, KeyIssueForm } from "@/components/admin/ClubForms";
+import { CreateClubForm, KeyIssueForm, VaultDepositForm } from "@/components/admin/ClubForms";
 import { formatCoin, formatDateTime } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -43,6 +43,8 @@ export default async function AdminClubsPage() {
                   </div>
                   <div className="text-sm font-semibold">금고 {formatCoin(c.balance)} 코인</div>
                 </div>
+
+                <VaultDepositForm club={c} />
 
                 <div className="mt-3 space-y-1.5">
                   {clubKeys.length === 0 ? (
