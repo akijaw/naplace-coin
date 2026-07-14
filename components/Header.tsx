@@ -26,7 +26,6 @@ export function Header({ user }: { user: UserRow | null }) {
         <nav className="hidden items-center gap-6 text-[15px] font-semibold text-muted md:flex">
           <Link href="/wallet" className="transition-colors hover:text-fg">지갑</Link>
           <Link href="/ranking" className="transition-colors hover:text-fg">랭킹</Link>
-          <Link href="/club" className="transition-colors hover:text-fg">부스</Link>
           <Link href="/docs" className="transition-colors hover:text-fg">문서</Link>
         </nav>
 

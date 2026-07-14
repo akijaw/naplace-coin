@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { isAdmin } from "@/lib/admin";
 import { listClubs } from "@/lib/db/clubs";
 import { Container } from "@/components/ui/Container";
 import { ClubConsole } from "@/components/club/ClubConsole";
@@ -5,6 +7,9 @@ import { ClubConsole } from "@/components/club/ClubConsole";
 export const dynamic = "force-dynamic";
 
 export default async function ClubPage() {
+  // 부스 결제 콘솔은 운영진(관리자) 전용. 일반 학생은 접근 불가.
+  if (!(await isAdmin())) redirect("/admin/login");
+
   const clubs = await listClubs();
 
   return (
